@@ -32,15 +32,25 @@ private:
 
 public:
     //constructor
-    encoder(string t);
+    explicit encoder(string t);
     //function to save coded data into a file
     void save_to_file(const string& filename) const;
     //overloaded function to appened into existing file
     void save_to_file(const string& filename, bool append_mode) const;
     //shows how efficiently the data was compressed
-    void show_packing_density();
+    void show_packing_density() const;
     //overridden virtual function to implement the process of building huffman tree
     void process() override;
+};
+
+class decoder : public huffman_base {
+private:
+    string encoded_str;
+    unordered_map<string, char> reversed_codes;
+
+public:
+    decoder(string s, unordered_map<string, char> r_c);
+
 };
 
 

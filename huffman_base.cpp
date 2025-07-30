@@ -152,7 +152,7 @@ void encoder::save_to_file(const string &filename, const bool append_mode) const
     out.close();
 }
 
-void encoder::show_packing_density() {
+void encoder::show_packing_density() const {
     const double size_of_normal_str = text.size() * 8;
     const double size_of_encoded_str = encoded_str.size();
     const double packing_density = (size_of_encoded_str/size_of_normal_str) * 100;
@@ -160,6 +160,7 @@ void encoder::show_packing_density() {
     cout << fixed << setprecision(2);
     cout << "\nPacking Density: " << packing_density << endl;
 }
+
 
 
 

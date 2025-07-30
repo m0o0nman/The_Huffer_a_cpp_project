@@ -34,7 +34,7 @@ public:
     //constructor
     encoder(string t);
     //function to save coded data into a file
-    void save_to_file(const string& filename);
+    void save_to_file(const string& filename) const;
     //overloaded function to appened into existing file
     void save_to_file(const string& filename, bool append_mode);
     //shows how efficiently the data was compressed

@@ -3,6 +3,9 @@
 //
 
 #include "huffman_base.h"
+
+#include <fstream>
+
 #include "node.h"
 #include <iostream>
 #include <string>
@@ -103,15 +106,29 @@ void encoder::process() {
         encoded_str += codes[c];
     }
 }
+//the function is made const to make the method's attributes immutable after initialization
+void encoder::save_to_file(const string& filename) const {
+    ofstream out(filename);                         //creates an output stream for the file
 
-void encoder::save_to_file(const string &filename) {
-    ofstream out(filename);
+    //checks if the file has opened or not
     if (out.fail()) {
         cerr << "Error opening file" << endl;
+        return;
     }
 
-    out << encoded_str << "\n";
+    out << encoded_str << "\n";                     //feeding the encoded string into the output file stream
+
+    //this for loop iterates over the unordered map for the char and their huffman code pair
+    for (auto pair: codes) {
+        //the ASCII value for each char is fed in the stream first for efficiency and reliability
+        //then the related char's code is saved as well in the same line
+        out << (int)(pair.first) << " " << pair.second << endl;
+    }
+
+    out.close();                                    //closes the output file stream, clears heap
 }
+
+
 
 
 

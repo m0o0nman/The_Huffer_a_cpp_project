@@ -5,6 +5,7 @@
 #include "huffman_base.h"
 
 #include <fstream>
+#include <iomanip>
 
 #include "node.h"
 #include <iostream>
@@ -112,11 +113,11 @@ void encoder::save_to_file(const string& filename) const {
 
     //checks if the file has opened or not
     if (out.fail()) {
-        cerr << "Error opening file" << endl;
+        cerr << "Error opening file. Try again." << endl;
         return;
     }
 
-    out << encoded_str << "\n";                     //feeding the encoded string into the output file stream
+    out << encoded_str << endl;;                     //feeding the encoded string into the output file stream
 
     //this for loop iterates over the unordered map for the char and their huffman code pair
     for (auto pair: codes) {
@@ -126,6 +127,38 @@ void encoder::save_to_file(const string& filename) const {
     }
 
     out.close();                                    //closes the output file stream, clears heap
+}
+//overloaded save to file function for appending to existing file.
+void encoder::save_to_file(const string &filename, const bool append_mode) const {
+    ofstream out;
+
+    //checks if the user has selected append mode or not.
+    if (append_mode) {
+        out.open(filename, ios::app);
+    } else {
+        out.open(filename);
+    }
+
+    if (out.fail()) {
+        cerr << "Error opening file. Try again" << endl;
+        return;
+    }
+
+    out << encoded_str << endl;
+    for (auto pair: codes) {
+        cout << (int)pair.first << " " << pair.second << endl;
+    }
+
+    out.close();
+}
+
+void encoder::show_packing_density() {
+    const double size_of_normal_str = text.size() * 8;
+    const double size_of_encoded_str = encoded_str.size();
+    const double packing_density = (size_of_encoded_str/size_of_normal_str) * 100;
+
+    cout << fixed << setprecision(2);
+    cout << "\nPacking Density: " << packing_density << endl;
 }
 
 

@@ -36,7 +36,7 @@ public:
     //function to save coded data into a file
     void save_to_file(const string& filename) const;
     //overloaded function to appened into existing file
-    void save_to_file(const string& filename, bool append_mode);
+    void save_to_file(const string& filename, bool append_mode) const;
     //shows how efficiently the data was compressed
     void show_packing_density();
     //overridden virtual function to implement the process of building huffman tree

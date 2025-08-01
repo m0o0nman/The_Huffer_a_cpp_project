@@ -7,151 +7,106 @@
 #include "login_signup.h"
 #include "huffman_base.h"
 
-void display_title();
-int ip();
 using namespace std;
+
+void display_title();
+int get_input();
+
 int main() {
     display_title();
 
-    //Initialize Login_Signup
-    std::unordered_map<std::string, std::pair<std::string, std::string>> user_database;
-    std::string user_file = "users.txt";
-    Login_Signup auth(user_database, user_file);
-    auth.load_from_file();
+    // Initialize Login_Signup system with proper constructor parameters
+    unordered_map<string, pair<string, string>> user_database;
+    string user_file = "users.txt";
+    Login_Signup user(user_database, user_file);
+    user.load_from_file();
 
-    //User Authentication Loop
-    bool logged_in = false;
-    while (!logged_in) {
-        cout << "\n1. Login\n2. Register\n3. Exit\n";
-        int choice = ip();
-
-        //handling login
-        if (choice == 1) {
-
-            //verifying username and password
-            string username, password;
-            cout << "Username: ";
-            cin >> username;
-            cin.ignore();
-
-            cout << "Password: ";
-            cin >> password;
-            cin.ignore();
-
-            if (auth.verify_login(username, password)) {
-                logged_in = true;
-                cout << "Login successful!\n";
-            } else {
-                cout << "Invalid username or password.\n";
-            }
-
-            //encode decode flow
-            if (auth.verify_login(username, password)) {
-                cout << "Login successful!\nWelcome " << username << endl;
-                cout <<"\n1. Encode message\n2. Decode message\n3. Exit\n";
-                int option = ip();
-
-                //encode flow
-                if (option == 1) {
-                    //taking message to encode
-                    string input_msg, encoded_filename;
-                    cout << "Enter message: ";
-                    getline(cin, input_msg);
-                    cout << "Save encoded message to(ex: example.txt): ";
-                    getline(cin, input_msg);
-
-                    //encoding
-                    encoder enc(input_msg);
-                    enc.process();
-                    enc.save_to_file(encoded_filename);
-                    enc.show_packing_density();
-                    cout <<"\nMessage encoded successfully at " << encoded_filename <<endl;
-                } else if (choice == 2) {
-                    string encoded_file;
-                    cout << "Enter filename (ex: example.txt):";
-                }
-            }
-
-        //handling registration
-        } else if (choice == 2) {
-
-            //taking username and passwords
-            string username, password;
-            cout << "Choose a username: ";
-            cin >> username;
-            cout << "Choose a password: ";
-            cin >> password;
-            if (auth.register_user(username, password)) {
-                cout << "Registration successful!\n";
-            } else {
-                cout << "Username already exists.\n";
-            }
-        } else if (choice == 3) {
-
-            //taking file name to decode
-            string encoded_filename;
-            cout << "Enter encoded filename(ex: example.txt): ";
-            getline(cin, encoded_filename);
-
-            //decoding flow
-            decoder dec("", {});
-            dec.code_decoder(encoded_filename);
-            dec.process();
-            std::cout << "File decoded successfully!\n";
-        } else {
-
-        }
-    }
-
-    // 3. Huffman Coding Loop
+    // Main authentication loop (similar to test.cpp)
     while (true) {
-        cout << "\n1. Encode message\n2. Decode message\n3. Exit\n";
-        int choice;
-        cin >> choice;
+        cout << "\n1. Register\n2. Login\n3. Exit" << endl;
+        int opt = get_input();
 
-        if (choice == 1) {
-            // Handle encoding
-            string message, original_filename, output_filename;
-            cout << "Enter the message to encode: ";
-            cin.ignore(); // To consume the newline character left by std::cin
-            getline(cin, message);
+        if (opt == 1) {
+            // Registration flow
+            string uname, pass;
+            cout << "Username: ";
+            cin.ignore();
+            getline(cin, uname);
+            cout << "Password: ";
+            getline(cin, pass);
 
-            std::cout << "Enter the name for the file to save(Ex: example.txt): ";
-            std::cin >> original_filename;
+            if (user.register_user(uname, pass)) {
+                cout << "Registered Successfully!\n";
+            } else {
+                cout << "Username already exists!\n";
+            }
+        }
+        else if (opt == 2) {
+            // Login flow
+            string uname, pass;
+            cout << "Username: ";
+            cin.ignore();
+            getline(cin, uname);
+            cout << "Password: ";
+            getline(cin, pass);
 
-            // Save the original message
-            std::ofstream out_original(original_filename);
-            out_original << message;
-            out_original.close();
-            std::cout << "Original message saved to " << original_filename << "\n";
+            if (user.verify_login(uname, pass)) {
+                cout << "Login successful! Welcome, " << uname << "\n";
 
-            std::cout << "Enter the name for the encoded file: ";
-            std::cin >> output_filename;
+                // Huffman operations loop (after successful login)
+                while (true) {
+                    cout << "\n1. Encode Message\n2. Decode Message\n3. Logout\nChoose: ";
+                    int choice = get_input();
 
-            // Create an encoder and process the message
-            encoder enc(message);
-            enc.process();
-            enc.save_to_file(output_filename);
-            enc.show_packing_density();
-            std::cout << "File encoded successfully!\n";
+                    if (choice == 1) {
+                        // Encoding flow
+                        string input_text, encoded_file_name;
+                        cout << "Enter message: ";
+                        cin.ignore();
+                        getline(cin, input_text);
+                        cout << "Save encoded message to (e.g. encoded.txt): ";
+                        getline(cin, encoded_file_name);
 
-        } else if (choice == 2) {
-            // Handle decoding
-            std::string encoded_filename;
-            std::cout << "Enter the name of the file to decode: ";
-            std::cin >> encoded_filename;
+                        // Create encoder with proper constructor (just the text)
+                        encoder enc(input_text);
+                        enc.process();
+                        enc.save_to_file(encoded_file_name);
+                        enc.show_packing_density();
+                        enc.display_code();
+                        cout << "\nMessage encoded successfully to " << encoded_file_name << endl;
+                    }
+                    else if (choice == 2) {
+                        // Decoding flow
+                        string encoded_filename;
+                        cout << "Enter file to decode: ";
+                        cin.ignore();
+                        getline(cin, encoded_filename);
 
-            // Create a decoder and process the file
-            decoder dec("", {});
-            dec.code_decoder(encoded_filename);
-            dec.process();
-            std::cout << "File decoded successfully!\n";
-
-        } else if (choice == 3) {
-            break; // Exit the Huffman loop
+                        // Create decoder with proper constructor parameters
+                        unordered_map<string, char> empty_reversed_codes;
+                        decoder dec("", empty_reversed_codes);
+                        dec.code_decoder(encoded_filename);
+                        dec.display_code();
+                        dec.process();
+                    }
+                    else if (choice == 3) {
+                        // Logout
+                        cout << "Logging out...\n";
+                        break;
+                    }
+                }
+            } else {
+                cout << "Login failed!\n";
+            }
+        }
+        else if (opt == 3) {
+            // Exit program
+            break;
         }
     }
 
+    // Save user data before exit (Login_Signup saves automatically in register_user)
+    cout << "Thank you for using The Huffer!\n";
     return 0;
 }
 
@@ -161,29 +116,33 @@ void display_title() {
     GetConsoleScreenBufferInfo(hConsole, &csbi);
     int consoleWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
 
-    std::string title = "The Huffer";
+    string title = "The Huffer";
     int padding = (consoleWidth > title.length()) ? (consoleWidth - title.length()) / 2 : 0;
 
-    //setting text color to green
+    // Setting text color to green
     SetConsoleTextAttribute(hConsole, 10);
+    cout << string(padding, ' ') << title << endl;
 
-    std::cout << std::string(padding, ' ') << title << std::endl;
-
-    //resetting text color
+    // Resetting text color
     SetConsoleTextAttribute(hConsole, 7);
 }
 
-int ip() {
+int get_input() {
     int choice;
-
     while (true) {
         cout << "Enter choice: ";
         cin >> choice;
-        cin.ignore();
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Invalid input. Please enter a number.\n";
+            continue;
+        }
 
         if (choice >= 1 && choice <= 3) {
             return choice;
         }
-        cerr << "Enter a number between 1 and 3" <<endl;
+        cout << "Enter a number between 1 and 3\n";
     }
 }

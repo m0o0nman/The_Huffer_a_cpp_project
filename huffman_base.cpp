@@ -1,7 +1,3 @@
-//
-// Created by Mr.Nazim on 7/29/2025.
-//
-
 #include "huffman_base.h"
 
 #include <fstream>
@@ -30,7 +26,6 @@ void huffman_base::build_frequency_map(const string &text) {
 
 //this method builds the huffman tree which is a min heap
 void huffman_base::build_huffman_tree() {
-    // FIX 1: Use a min heap instead of max heap
     // Create a comparator for min heap based on frequency
     auto compare = [](node* a, node* b) {
         return a->freq > b->freq;  // Min heap: smaller frequencies have higher priority
@@ -114,7 +109,7 @@ void encoder::process() {
 
     build_frequency_map(text);              //builds the frequency map of the text
     build_huffman_tree();                   //from the frequency map, this method builds the huffman tree (min heap)
-    build_codes(root, "");        //traversing the huffman tree, code is assigned to each leaf node carrying a char
+    build_codes(root, "");          //traversing the huffman tree, code is assigned to each leaf node carrying a char
 
     //This for loop iterates over the codes map and assigns code for each character
     //in the text string into the coded string where the message is encoded
@@ -164,7 +159,7 @@ void encoder::save_to_file(const string &filename, const bool append_mode) const
 
     out << encoded_str << endl;
     for (auto pair: codes) {
-        out << (int)pair.first << " " << pair.second << endl;  // FIX 6: Use 'out' instead of 'cout'
+        out << (int)pair.first << " " << pair.second << endl;
     }
 
     out.close();
@@ -198,7 +193,7 @@ void decoder::code_decoder(const string &encoded_filename){
     int ascii;                                  //for storing the ascii value of the chars from the file
     string code;                                //huffman code to store in the map
 
-    // FIX 8: Clear previous data
+    //clearing previous data
     reversed_codes.clear();
     codes.clear();
 
@@ -212,15 +207,15 @@ void decoder::code_decoder(const string &encoded_filename){
 }
 
 void decoder::process() {
-    // FIX 9: Complete the decoder process to actually decode and display the message
+    //complete the decoder process to decode and display the message
     string current_code = "";
     string decoded_text = "";
 
     for (char bit : encoded_str) {
         current_code += bit;
         if (reversed_codes.find(current_code) != reversed_codes.end()) {
-            decoded_text += reversed_codes[current_code];  // Add the decoded character
-            current_code = "";  // Reset for next character
+            decoded_text += reversed_codes[current_code];  //adds the decoded character
+            current_code = "";  //resets for next character
         }
     }
 

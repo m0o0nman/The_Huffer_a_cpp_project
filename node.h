@@ -1,7 +1,3 @@
-//
-// Created by Mr.Nazim on 7/29/2025.
-//
-
 #ifndef NODE_H
 #define NODE_H
 

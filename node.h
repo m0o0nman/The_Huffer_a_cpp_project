@@ -18,10 +18,8 @@ public:
     node(char c, int f);
     node();
 
-    bool compare_nodes(node* a, node* b) {
-        if (a->left == a->right) return a->ch > a->ch;
-        return a->left > a->right;
-    }
+    //method to compare frequencies of nodes. Made static to retain the value throughout runtime
+    static bool compare_nodes(node* a, node* b);
 
     //destructor
     ~node();

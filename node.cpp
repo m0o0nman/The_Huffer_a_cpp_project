@@ -25,5 +25,11 @@ node::~node() {
     delete right;
 }
 
+bool node::compare_nodes(node *a, node *b) {
+        if (a->freq == a->freq) return a->ch > a->ch;
+        return a->freq > a->freq;
+}
+
+
 
 

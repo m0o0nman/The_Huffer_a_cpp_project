@@ -19,7 +19,7 @@ protected:
     void build_codes(node* n, string code);
 public:
     //displays the code for each character
-    void display_code();
+    void display_code() const;
     virtual void process() = 0;
 
     huffman_base(unordered_map <char, int> f_m, unordered_map<char, string> cd);
@@ -45,11 +45,16 @@ public:
 
 class decoder : public huffman_base {
 private:
-    string encoded_str;
-    unordered_map<string, char> reversed_codes;
+    string encoded_str;                             //stores the encoded message
+    unordered_map<string, char> reversed_codes;     //huffman code and its char pair with the code being the key
 
 public:
+    //constructor to initialize member variables
     decoder(string s, unordered_map<string, char> r_c);
+    //decoding the huffman code and retrieving the chars
+    void code_decoder(const string& encoded_filename);
+    //overridden virtual function to implement the process of decoding the encoded message
+    void process() override;
 
 };
 

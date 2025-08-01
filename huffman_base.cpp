@@ -15,7 +15,7 @@
 #include <queue>
 
 huffman_base::huffman_base(unordered_map<char, int> f_m, unordered_map<char, string> cd) {
-    //initializing protected members of the huffman_base class with a constrcutor
+    //initializing protected members of the huffman_base class with a constructor
     root = nullptr;
     freq_map = f_m;
     codes = cd;
@@ -81,7 +81,7 @@ void huffman_base::build_codes(node* n, string codes) {
     build_codes(n->right, codes + "1");
 }
 
-void huffman_base::display_code() {
+void huffman_base::display_code() const {
     cout << "\nHuffman Codes:\n";
     for (auto pair: codes) {
         cout <<pair.first<< " : " << pair.second <<endl;
@@ -160,6 +160,48 @@ void encoder::show_packing_density() const {
     cout << fixed << setprecision(2);
     cout << "\nPacking Density: " << packing_density << endl;
 }
+
+decoder::decoder(string s, unordered_map<string, char> r_c) {
+    encoded_str = s;
+    reversed_codes = r_c;
+}
+
+void decoder::code_decoder(const string &encoded_filename){
+    ifstream in(encoded_filename);              //creating an input file stream
+
+    //error handling
+    if (!in) {
+        cerr << "Error Loading file. Try gain" << endl;
+        return;
+    }
+
+    //reads the first line from the encoded file which is the encoded message and stores in encoded_str
+    getline(in, encoded_str);
+    int ascii;                                  //for storing the ascii value of the chars from the file
+    string code;                                //huffman code to store in the map
+
+    //from the input stream, the integer is fed into ascii and string into the code variables
+    while (in >> ascii >> code) {
+        reversed_codes[code] = (char)ascii;
+    }
+
+    in.close();                                 //closing the input file stream
+}
+
+void decoder::process() {
+    string current_code = "", decoded_txt = "";
+
+    for (char bit : encoded_str) {
+        current_code += bit;
+        if (reversed_codes.find(current_code) != reversed_codes.end()) {
+            decoded_txt += reversed_codes[current_code];
+            current_code = "";
+        }
+    }
+    cout << " Your decoded message: \n" << decoded_txt << endl;
+}
+
+
 
 
 

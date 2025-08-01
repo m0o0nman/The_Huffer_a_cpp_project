@@ -64,7 +64,7 @@ void huffman_base::build_huffman_tree() {
     root = sorted_char_freq.empty() ? nullptr : sorted_char_freq.top();
 }
 //a recursive function to assign an unique prefix proof binary code for each leaf node or character
-void huffman_base::build_codes(node* n, string codes) {
+void huffman_base::build_codes(node* n, string code) {
     if (n == nullptr) return;                          //checks if the node is a root or not, if root, the function breaks
 
     //cheks if the node is a leaf node or not
@@ -72,13 +72,13 @@ void huffman_base::build_codes(node* n, string codes) {
     if (n->left == nullptr && n->right == nullptr) {
         //the string is checked if only 1 char is remaining using empty()
         //the empty() checks if only 1 remains and returns true if, only for chars with most frequency
-        codes[n->ch] = codes.empty() ? "0" : codes;   //the value for the key char is then assigned 0
+        codes[n->ch] = code.empty() ? "0" : code;   //the value for the key char is then assigned 0
     }
 
     //recursive call of the left child of node n, traverses and appends 0 when goes to left child
-    build_codes(n->left, codes + "0");
+    build_codes(n->left, code + "0");
     //recursive call of the right child of node n, traverses and appends 1 when goes to right child
-    build_codes(n->right, codes + "1");
+    build_codes(n->right, code + "1");
 }
 
 void huffman_base::display_code() const {
@@ -88,7 +88,7 @@ void huffman_base::display_code() const {
     }
 }
 
-encoder::encoder(string t): huffman_base() {
+encoder::encoder(string t): huffman_base(freq_map, codes) {
     text = t;
     encoded_str = "";
 }
@@ -161,7 +161,7 @@ void encoder::show_packing_density() const {
     cout << "\nPacking Density: " << packing_density << endl;
 }
 
-decoder::decoder(string s, unordered_map<string, char> r_c) {
+decoder::decoder(string s, unordered_map<string, char> r_c) : huffman_base(freq_map, codes) {
     encoded_str = s;
     reversed_codes = r_c;
 }
@@ -189,16 +189,14 @@ void decoder::code_decoder(const string &encoded_filename){
 }
 
 void decoder::process() {
-    string current_code = "", decoded_txt = "";
+    string current_code = "";
 
     for (char bit : encoded_str) {
         current_code += bit;
         if (reversed_codes.find(current_code) != reversed_codes.end()) {
-            decoded_txt += reversed_codes[current_code];
             current_code = "";
         }
     }
-    cout << " Your decoded message: \n" << decoded_txt << endl;
 }
 
 

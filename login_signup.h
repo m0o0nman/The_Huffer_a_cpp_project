@@ -1,7 +1,3 @@
-//
-// Created by Mr.Nazim on 8/1/2025.
-//
-
 #ifndef LOGIN_SIGNUP_H
 #define LOGIN_SIGNUP_H
 
@@ -10,8 +6,8 @@
 
 using namespace std;
 class Login_Signup {
-    string filename;
-    unordered_map<string, pair<string, string>> user_database;
+    string& filename;
+    unordered_map<string, pair<string, string>>& user_database;
 
 
     //Function to generate salt randomly
@@ -22,12 +18,12 @@ class Login_Signup {
 public:
     //Functions for user authentification
     bool username_exists(const string& username) const;                                      //Check if username already exists
-    bool register_user(string username, string password, const string& filename);            //Registers new user, saves user info(username, salt, hashed password) into file
+    bool register_user(string username, string password);            //Registers new user, saves user info(username, salt, hashed password) into file
     bool verify_login(const string& username, const string& password);      //Varifies login by matching username, affiliated salt and the hashed password
 
     //Functions to save or retrieve user data
-    void save_to_file(const string& filename);
-    void load_from_file(const string& filename);
+    void save_to_file();
+    bool load_from_file();
     //constructor
     Login_Signup(unordered_map<string, pair<string, string>> &ud, string &fn);
 };

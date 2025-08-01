@@ -35,7 +35,7 @@ public:
     explicit encoder(string t);
     //function to save coded data into a file
     void save_to_file(const string& filename) const;
-    //overloaded function to appened into existing file
+    //overloaded function to append into existing file
     void save_to_file(const string& filename, bool append_mode) const;
     //shows how efficiently the data was compressed
     void show_packing_density() const;

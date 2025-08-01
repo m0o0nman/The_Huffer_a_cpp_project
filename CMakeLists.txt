@@ -3,4 +3,4 @@ project(The_Huffer_a_CPP_project)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(The_Huffer_a_CPP_project main.cpp)
+add_executable(The_Huffer_a_CPP_project main.cpp huffman_base.cpp login_signup.cpp node.cpp)

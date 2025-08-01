@@ -15,9 +15,7 @@
 
 using namespace std;
 
-Login_Signup::Login_Signup(unordered_map<string, pair<string, string>>& ud, string& fn) {
-    user_database = ud;
-    filename = fn;
+Login_Signup::Login_Signup(unordered_map<string, pair<string, string>>& ud, string& fn) : user_database(ud), filename(fn) {
 
 }
 
@@ -51,10 +49,10 @@ string Login_Signup::generate_hash(const string &password, const string &salt) {
 }
 
 bool Login_Signup::username_exists(const string& username) const {
-    return user_database.contains(username);
+    return user_database.count(username) > 0;
 }
 
-bool Login_Signup::register_user(string username, string password, const string &filename) {
+bool Login_Signup::register_user(string username, string password) {
     if (username_exists(username)) {
         return false;
     }
@@ -68,7 +66,7 @@ bool Login_Signup::register_user(string username, string password, const string 
 
         //The username is saved as the key in the unordered map. And the salt and password is saved as a pair two strings.
         user_database[username] = make_pair(salt, hashed_password);
-        save_to_file(filename);
+        save_to_file();
         return true;
 }
 
@@ -87,7 +85,7 @@ bool Login_Signup::verify_login(const string &username, const string &password) 
         return computed_hash == stored_hash;
 }
 
-void Login_Signup::save_to_file(const string &filename) {   //Saves new user data into the file
+void Login_Signup::save_to_file() {   //Saves new user data into the file
     ofstream file(filename);                                //A file object is created
 
     if (!file) {
@@ -100,7 +98,7 @@ void Login_Signup::save_to_file(const string &filename) {   //Saves new user dat
     }
 }
 
-void Login_Signup::load_from_file(const string &filename) {  //Loads info(username, salt, hashed password) into the unordered map
+bool Login_Signup::load_from_file() {  //Loads info(username, salt, hashed password) into the unordered map
     ifstream file(filename);
     if (!file) {
         cerr << "Error opening file: "<< filename <<endl;    //Prints error if the input stream couldn't read the file
@@ -125,11 +123,5 @@ void Login_Signup::load_from_file(const string &filename) {  //Loads info(userna
             }
         }
     }
+    return true;
 }
-
-
-
-
-
-
-

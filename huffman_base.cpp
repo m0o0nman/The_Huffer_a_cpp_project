@@ -17,6 +17,8 @@ huffman_base::huffman_base(unordered_map<char, int> f_m, unordered_map<char, str
     codes = cd;
 }
 
+
+
 //this unordered map contains the frequency as value for each character as key
 void huffman_base::build_frequency_map(const string &text) {
     for (char c: text) {
@@ -219,5 +221,11 @@ void decoder::process() {
         }
     }
 
-    cout << "\nDecoded Text:\n" << decoded_text << endl;
+    cout << "Decoded Text: " << decoded_text << endl;
 }
+
+huffman_base::~huffman_base() = default;
+
+encoder::~encoder() = default;
+
+decoder::~decoder() = default;

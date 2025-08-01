@@ -21,6 +21,7 @@ public:
     //displays the code for each character
     void display_code() const;
     virtual void process() = 0;
+    virtual ~huffman_base();
 
     huffman_base(unordered_map <char, int> f_m, unordered_map<char, string> cd);
 };
@@ -41,6 +42,7 @@ public:
     void show_packing_density() const;
     //overridden virtual function to implement the process of building huffman tree
     void process() override;
+    ~encoder() override;
 };
 
 class decoder : public huffman_base {
@@ -55,6 +57,7 @@ public:
     void code_decoder(const string& encoded_filename);
     //overridden virtual function to implement the process of decoding the encoded message
     void process() override;
+    ~decoder() override;
 
 };
 

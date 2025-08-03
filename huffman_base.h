@@ -20,6 +20,7 @@ protected:
 public:
     //displays the code for each character
     void display_code() const;
+    //virtual function to process the encoding/decoding through polymorphism
     virtual void process() = 0;
     virtual ~huffman_base();
 
@@ -40,7 +41,7 @@ public:
     void save_to_file(const string& filename, bool append_mode) const;
     //shows how efficiently the data was compressed
     void show_packing_density() const;
-    //overridden virtual function to implement the process of building huffman tree
+    //overridden virtual function to implement the process of building huffman tree through polumorphism
     void process() override;
     ~encoder() override;
 };

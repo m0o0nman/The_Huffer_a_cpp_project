@@ -17,6 +17,9 @@ public:
     //method to compare frequencies of nodes. Made static to retain the value throughout runtime
     static bool compare_nodes(node* a, node* b);
 
+    //friend function to display node info
+    friend void display_node_info(const node& n);
+
     //destructor
     ~node();
 };

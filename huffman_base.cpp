@@ -176,7 +176,7 @@ void encoder::show_packing_density() const {
     cout << "\nPacking Density: " << packing_density << "%" << endl;
 }
 
-decoder::decoder(string s, unordered_map<string, char> r_c) : huffman_base({}, {}) {  // FIX 7: Initialize with empty maps
+decoder::decoder(string s, unordered_map<string, char> r_c) : huffman_base({}, {}) { 
     encoded_str = s;
     reversed_codes = r_c;
 }
@@ -209,7 +209,7 @@ void decoder::code_decoder(const string &encoded_filename){
 }
 
 void decoder::process() {
-    //complete the decoder process to decode and display the message
+    //completes the decoder process to decode and display the message
     string current_code = "";
     string decoded_text = "";
 
